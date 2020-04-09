@@ -1,12 +1,15 @@
-######################
-######################
+############################################
+############################################
 #
 # Greenspace visit GPS data processing
-# Author: Meghann Mears meghann.mears@googlemail.com
-# Github repository: 
+# Version date: 17/12/2019
 #
-######################
-######################
+# Author: Meghann Mears 
+# Email: meghann.mears@googlemail.com
+# Github repository: https://github.com/MeghannMears/GreenspaceGPS
+#
+############################################
+############################################
 
 library(tidyverse) 
 library(sf)
@@ -104,7 +107,7 @@ gps_dat <- gps_dat %>%
 gps_dat <- gps_dat[gps_dat$duration >= 70 & gps_dat$point_count > 2,] 
 
 
-# Break into ‘quality segments’ where the speed between consecutive data points
+# Break into â€˜quality segmentsâ€™ where the speed between consecutive data points
 # is not faster than would be expected for non-vehicular travel. Compare each pair
 # of quality segments and remove the shorter. Repeat until the trip is a single
 # quality segment.
@@ -370,7 +373,7 @@ for (i in 1:length(unique(interpolated_points$trip_id))) {
 		trip_smooth$trip_id <-unique(trip_dat$trip_id)
 		trip_smooth$device_id <-unique(trip_dat$device_id)
 
-	# Otherwise, don’t smooth, just use the interpolated data
+	# Otherwise, donâ€™t smooth, just use the interpolated data
 	} else {
 		trip_smooth <- data.frame(V1 = trip_dat$easting, V2 = trip_dat$northing, time = trip_dat$time, trip_id = trip_dat$trip_id, device_id = trip_dat$device_id)
 	}
@@ -630,9 +633,9 @@ smoothed_trips <- smoothed_trips %>%
 	left_join(trips_gs_dissolve_isect, by = 'new_trip_id') %>%
 	mutate(pct_in_gs = as.numeric(in_gs_len) / as.numeric(trip_len)) 
 
-# For sites that don’t include any movement - add in data manually.
+# For sites that donâ€™t include any movement - add in data manually.
 # (They are definitely in greenspaces otherwise would have been removed
-# previously - but the intersect doesn’t product a result for the trip.)
+# previously - but the intersect doesnâ€™t product a result for the trip.)
 smoothed_trips[which(as.numeric(smoothed_trips$trip_len) == 0),c('in_gs_len')] <- 0
 smoothed_trips[which(as.numeric(smoothed_trips$trip_len) == 0),c('gs_count','pct_in_gs')] <- 1
 
